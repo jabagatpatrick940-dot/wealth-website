@@ -1,9 +1,9 @@
 name = "wealth-website"
-main = "worker. js"
+main = "worker.js"
 compatibility_date = "2026-08-28"
 
-
-
+[assets]
+directory = "."
 
 [[d1_databases]]
 binding = "DB"
