@@ -1,1 +1,57 @@
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
 
+    const headers = {
+      "Content-Type": "application/json",
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "Referrer-Policy": "no-referrer"
+    };
+
+    if (url.pathname === "/api/health") {
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          service: "wealth-website"
+        }),
+        { headers }
+      );
+    }
+
+    if (url.pathname === "/api/database") {
+      try {
+        const result = await env.DB
+          .prepare("SELECT 1 AS connected")
+          .first();
+
+        return new Response(
+          JSON.stringify({
+            ok: true,
+            database: result?.connected === 1
+          }),
+          { headers }
+        );
+      } catch (error) {
+        return new Response(
+          JSON.stringify({
+            ok: false,
+            error: "Database connection failed"
+          }),
+          {
+            status: 500,
+            headers
+          }
+        );
+      }
+    }
+
+    return new Response(
+      JSON.stringify({
+        ok: true,
+        message: "Wealth website API is running"
+      }),
+      { headers }
+    );
+  }
+};
