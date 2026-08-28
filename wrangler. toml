@@ -1,11 +1,5 @@
 name = "wealth-website"
-main = "worker.js"
 compatibility_date = "2026-08-28"
 
 [assets]
-directory = "."
-
-[[d1_databases]]
-binding = "DB"
-database_name = "wealth-db"
-database_id = "1856385c-3dab-4e20-bb52-6ba6c3e5c817"
+directory = "./public"
