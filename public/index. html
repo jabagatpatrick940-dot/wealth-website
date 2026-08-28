@@ -1,1 +1,285 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wealth Website</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #172033;
+    }
+
+    .container {
+      max-width: 430px;
+      margin: auto;
+      padding: 24px;
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 30px;
+      font-weight: 700;
+      margin: 35px 0 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #687386;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.07);
+    }
+
+    h2 { margin-top: 0; }
+
+    label {
+      display: block;
+      margin: 15px 0 7px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #d9deea;
+      border-radius: 10px;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 20px;
+      border: 0;
+      border-radius: 10px;
+      background: #172033;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .switch {
+      text-align: center;
+      margin-top: 20px;
+      color: #687386;
+      font-size: 14px;
+    }
+
+    .switch button {
+      width: auto;
+      margin: 0;
+      padding: 0;
+      background: none;
+      color: #172033;
+      font-size: 14px;
+    }
+
+    .hidden { display: none; }
+
+    .balance {
+      background: #172033;
+      color: white;
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .balance small {
+      opacity: .75;
+    }
+
+    .balance h1 {
+      margin: 8px 0 0;
+      font-size: 30px;
+    }
+
+    .menu {
+      display: grid;
+      gap: 12px;
+    }
+
+    .menu button {
+      margin: 0;
+      background: white;
+      color: #172033;
+      text-align: left;
+      box-shadow: 0 4px 15px rgba(0,0,0,.06);
+    }
+
+    .notice {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #f0f2f6;
+      color: #687386;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .logout {
+      background: #e8ebf1;
+      color: #172033;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div id="auth">
+
+    <div class="logo">Wealth</div>
+    <div class="subtitle">Secure account portal</div>
+
+    <div class="card">
+
+      <div id="loginForm">
+        <h2>Sign in</h2>
+
+        <label>Email</label>
+        <input id="loginEmail" type="email" placeholder="you@example.com">
+
+        <label>Password</label>
+        <input id="loginPassword" type="password" placeholder="Password">
+
+        <button onclick="login()">Sign in</button>
+
+        <div class="switch">
+          Don't have an account?
+          <button onclick="showRegister()">Create account</button>
+        </div>
+      </div>
+
+      <div id="registerForm" class="hidden">
+        <h2>Create account</h2>
+
+        <label>Full name</label>
+        <input id="regName" type="text" placeholder="Full name">
+
+        <label>Email</label>
+        <input id="regEmail" type="email" placeholder="you@example.com">
+
+        <label>Password</label>
+        <input id="regPassword" type="password" placeholder="Password">
+
+        <button onclick="register()">Create account</button>
+
+        <div class="switch">
+          Already registered?
+          <button onclick="showLogin()">Sign in</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="notice">
+      Your account information is handled through the site's authorized
+      backend services. Investment products, deposits, withdrawals, and
+      returns are not represented here unless supported by an actual
+      authorized transaction system.
+    </div>
+
+  </div>
+
+
+  <div id="dashboard" class="hidden">
+
+    <div class="logo">Wealth</div>
+    <div class="subtitle">Account dashboard</div>
+
+    <div class="balance">
+      <small>Available balance</small>
+      <h1 id="balance">₱0.00</h1>
+    </div>
+
+    <div class="card">
+      <h2>Welcome, <span id="userName">User</span></h2>
+
+      <div class="menu">
+        <button onclick="alert('Deposit service will connect to the authorized payment provider.')">
+          Deposit
+        </button>
+
+        <button onclick="alert('Withdrawal service will connect to the authorized payment provider.')">
+          Withdraw
+        </button>
+
+        <button onclick="alert('Transaction history will load from the authorized backend.')">
+          Transaction history
+        </button>
+
+        <button onclick="alert('Account settings')">
+          Account settings
+        </button>
+
+        <button class="logout" onclick="logout()">
+          Log out
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  let currentUser = null;
+
+  function showRegister() {
+    document.getElementById("loginForm").classList.add("hidden");
+    document.getElementById("registerForm").classList.remove("hidden");
+  }
+
+  function showLogin() {
+    document.getElementById("registerForm").classList.add("hidden");
+    document.getElementById("loginForm").classList.remove("hidden");
+  }
+
+  function register() {
+    const name = document.getElementById("regName").value.trim();
+    const email = document.getElementById("regEmail").value.trim();
+    const password = document.getElementById("regPassword").value;
+
+    if (!name || !email || !password) {
+      alert("Please complete all fields.");
+      return;
+    }
+
+    alert("Registration requires the production backend.");
+  }
+
+  function login() {
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    if (!email || !password) {
+      alert("Please enter your email and password.");
+      return;
+    }
+
+    alert("Login requires the production authentication backend.");
+  }
+
+  function logout() {
+    currentUser = null;
+    document.getElementById("dashboard").classList.add("hidden");
+    document.getElementById("auth").classList.remove("hidden");
+  }
+</script>
+
+</body>
+</html>
